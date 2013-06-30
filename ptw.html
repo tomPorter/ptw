@@ -41,7 +41,8 @@ Tom Porter
 <h1>New tools available on <code>eclipse-bb</code> development server:</h1>
 <ul>
 <li><p><code>pip</code> - A python package management tool, allows per-user installation of python packages.</p></li>
-<li><p><code>virtualenv</code> - Allows sandboxing of project-specific combinations of python packages.</p></li>
+<li><p><code>virtualenv</code> - Allows sandboxing of project-specific combinations of python packages.</p>
+<p><em>Won't be covered today, I have not figured out how to set it up yet!</em></p></li>
 <li><p><code>git</code> - A distributed source control management tool.</p>
 <p><em>Not so much for primary use, but useable by <code>pip</code> for installing third party python packages directly from <code>github.com</code></em></p></li>
 </ul>
@@ -52,7 +53,7 @@ Tom Porter
 <ul>
 <li><p>Sign onto the eclipse development server using <code>CRT</code> or <code>Putty</code></p></li>
 <li><p>Issue this command:</p>
-<pre><code>/home/{your_userid}/&gt; pip install nosetests --user -I</code></pre>
+<pre><code>/home/{your_userid}/&gt; pip install --user -I nosetests </code></pre>
 <p>This tells <code>pip</code> to install the <code>nosetests</code> package in your home directory and to ignore any exiting system versions.</p>
 <p><em>For now, this is how I would install any third party python package you are interested in, particularly ones that you will use across projects.</em></p></li>
 </ul>
@@ -101,14 +102,7 @@ Python 2.7.3 (v2.7.3:70274d53c1dd, Apr  9 2012, 20:52:43)
 ...
 In [1]: import count
 
-In [2]: count.count_to?
-Type:       function
-String Form:&lt;function count_to at 0x101dafe60&gt;
-File:       /Users/tporter/Documents/python_tool_walkthrough/count.py
-Definition: count.count_to(n)
-Docstring:  Counts up to &quot;n&quot;
-
-In [3]: count.count_to??
+In [2]: count.count_to??
 Type:       function
 String Form:&lt;function count_to at 0x101dafe60&gt;
 File:       /Users/tporter/Documents/python_tool_walkthrough/count.py
@@ -119,12 +113,10 @@ def count_to(n):
     for x in range(1,n+1):
         print &quot;%i Elephant&quot; % x
 
-In [4]: count.count_to(3)
+In [3]: count.count_to(3)
 1 Elephant
 2 Elephant
-3 Elephant
-
-In [5]: quit()</code></pre>
+3 Elephant</code></pre>
 </div>
 <div class="section slide level1" id="designing-programs-as-modules-3.">
 <h1>Designing programs as <em>Modules</em> 3.</h1>
@@ -156,8 +148,8 @@ In [5]: quit()</code></pre>
     docs/
         {documentation for project}</code></pre>
 </div>
-<div class="section slide level1" id="project-organization-2.">
-<h1>Project Organization 2.</h1>
+<div class="section slide level1" id="project-organization-digression.">
+<h1>Project Organization (digression).</h1>
 <h2 id="init__.py-whaat"><code>__init__.py</code> <em>whaat</em>??</h2>
 <pre><code>/home/tporter/count_project/count/&gt; ls -la __init__.py
 rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
@@ -165,7 +157,7 @@ rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
 </div>
 <div class="section slide level1" id="deep-black-python-magic-explained">
 <h1>Deep Black Python Magic <em>explained</em></h1>
-<p>If a directory contains an <code>__init__.py</code> file, that marks the directory as part of a <code>Package</code> which will make it discoverable by an <code>import</code> statement.</p>
+<p>If a directory contains an <code>__init__.py</code> file, that marks the directory as part of a <code>Package</code> which will make it discoverable by an <code>import</code> statement. If the <code>__init__.py</code> file contains any actual code, it is executed the first time the package is imported.</p>
 <p><em>That's how I can be sitting in the <code>count_project</code> directory, start ipython, issue <code>import count.count as c</code> and I will get access to <code>./count_project/count/count.py</code></em></p>
 <p>Note that periods in the import statement translate to directories and python modules in them:</p>
 <p><code>import count.count</code> ↔ <code>count/count.py</code></p>
@@ -173,7 +165,7 @@ rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
 <pre><code>c.count_to(5)</code></pre>
 <p>as opposed to:</p>
 <pre><code>count.count.count_to(5)</code></pre>
-<p>If the <code>__init__.py</code> file contains any actual code, it is executed the first time the package is imported.</p>
+<p><strong>These <code>__init__.py</code> files allow the imports in our tests to work properly without having to mess with the python system path.</strong></p>
 </div>
 <div class="section slide level1" id="test-driven-development-and-testing-with-nose.">
 <h1>Test Driven Development and testing with <code>nose</code>.</h1>
@@ -181,7 +173,7 @@ rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
 <p>New features are defined in terms of new tests: you write a new test, the test fails (because there is no code to go with it), and then you write code to make the test pass. Ideally your code changes don't cause other tests to fail!</p>
 <p>In order for this approach to work, tests have to be:</p>
 <ul>
-<li><p><em>Independant</em>. Order of test execution should not matter, and tests should not depend on prior tests.</p></li>
+<li><p><em>independent</em>. Order of test execution should not matter, and tests should not depend on prior tests.</p></li>
 <li><p><em>Repeatable</em>. Tests should not depend on external system state. All tests should start from a repeatable known state.</p></li>
 <li><p><em>Easy to Run</em>. If tests take a while to run, then we won't run them after each code change.</p></li>
 </ul>
@@ -191,25 +183,16 @@ rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
 <h1>Testing with <code>nose</code>: Test Structure.</h1>
 <p>Documentation for <code>nose</code> is avail at <a href="https://nose.readthedocs.org/en/latest/">https://nose.readthedocs.org/en/latest/</a></p>
 <p>A great tutorial is available at <a href="http://ivory.idyll.org/articles/nose-intro.html">http://ivory.idyll.org/articles/nose-intro.html</a></p>
-<p><code>nose</code> discovers tests in your project and tries to run them and reports on the results.</p>
+<p><code>nosetests</code> (The test runner from <code>nose</code>) discovers tests in your project and tries to run them and reports on the results.</p>
 <ul>
 <li><p>Any directory that starts with <code>[Tt]test*</code> will get inspected for tests to run.</p></li>
 <li><p>Any python program that starts with <code>[Tt]est*</code> will be run as a test.</p></li>
-<li><p>Any function in a test program that starts with <code>test*</code> will be run as a test.<br />If the function returns <code>True</code>, then the test passed, if it returns <code>False</code>, the test fails.</p></li>
+<li><p>Any function in a test program that starts with <code>test*</code> will be run as a test. If the function returns <code>True</code>, then the test passed, if it returns <code>False</code>, the test fails.</p></li>
 <li><p>You can use directory structure and test program names and contents to organize your tests, since you can tell nose to run all your tests or subsets of them based on the path to the tests you want to run.</p></li>
 </ul>
 </div>
-<div class="section slide level1" id="testing-with-nose-test-structure.-2">
-<h1>Testing with <code>nose</code>: Test Structure. 2</h1>
-<p>Revisiting our theoretical project structure:</p>
-<pre><code>    tests/
-        __init__.py
-        common_test_functions.py
-        test_this_part/
-            test_this_a.py
-            test_this_b.py
-        test_the_other_part/
-            test_the_last_part.py</code></pre>
+<div class="section slide level1" id="testing-with-nose-test-structure-2.">
+<h1>Testing with <code>nose</code>: Test Structure 2.</h1>
 <p>The simplest test we can have is a single python program called <code>tests/test_simple.py</code> containing a single function that has an assertion in it that evaluates to <code>True</code> or <code>False</code>:</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="co">#test_simple.py</span>
 <span class="kw">def</span> test_always_passes():
@@ -219,19 +202,33 @@ rw-r--r--  1 tporter  staff  0 May 17 19:52 __init__.py</code></pre>
 .
 ----------------------------------------------------------------------
 Ran 1 test in 0.008s
-
 OK</code></pre>
+</div>
+<div class="section slide level1" id="testing-with-nose-test-structure-3.">
+<h1>Testing with <code>nose</code>: Test Structure 3.</h1>
+<p>A more complex <code>tests/</code> directory layout merely helps organize tests and keeps your individual test files small.</p>
+<pre><code>tests/
+    __init__.py
+    common_test_functions.py
+    test_this_part/
+        test_this_a.py
+        test_this_b.py
+    test_the_other_part/
+        test_the_last_part.py  </code></pre>
+<p>Run just one test:</p>
+<pre><code>nosetests tests/test_this_part/test_this_a.py</code></pre>
+<p><code>common_test_functions.py</code> can contain code that all your tests may need. It can be imported at the top of all your tests and the code can be used anywhere in your tests. I suppose the import could go in the mysterious <code>__init__.py</code>.</p>
 </div>
 <div class="section slide level1" id="assert-methods-how-you-check-if-the-objects-under-test-worked-or-not.">
 <h1><code>Assert</code> Methods, How you check if the objects under test worked or not.</h1>
-<p>Python gives us the <code>assert(condition)</code> method that raises an <code>AssertionError</code> when the condition is not true. <code>nosetests</code> and the <code>UnitTest</code> module fund in the standard library use <code>assert</code> and related functions to drive tests. <a href="http://docs.python.org/release/2.6.4/library/unittest.html#testcase-objects">The python UnitTest documentation</a> shows the <em>assert</em> variations that are available in <code>UnitTest</code>, for example:</p>
+<p>Python gives us the <code>assert(condition[,failure_message])</code> method that raises an <code>AssertionError</code> when the condition is not true. <code>nosetests</code> and the <code>UnitTest</code> module found in the standard library use <code>assert</code> and related functions to drive tests. The python UnitTest documentation <a href="http://docs.python.org/release/2.6.4/library/unittest.html#testcase-objects">http://docs.python.org/release/2.6.4/library/unittest.html#testcase-objects</a> shows the <em>assert</em> variations that are available in <code>UnitTest</code>, for example:</p>
 <ul>
 <li><code>assertEqual(a,b[,failure_message])</code> Checks for equality of <code>a</code> and <code>b</code>.</li>
 <li><code>assert_(condition[,failure_message])</code> Checks that condition is true.</li>
 <li><code>assertRaises(exception,function[,function_keywords,...])</code> Checks that exception is raised when function is called with function_keywords.</li>
 </ul>
 <p>The <code>nosetests.tools</code> module has access to all <code>UnitTest</code> asserts but uses snake_case for them instead of camelCase. <em>(I don't know why)</em> It also has some other convenience methods available as well.</p>
-<p><strong>You can have multiple assert statements in a test function, but the first failing assertion ends the test, so brak them up.</strong></p>
+<p><strong>You can have multiple assert statements in a test function, but the first failing assertion ends the test, so break them up.</strong></p>
 </div>
 <div class="section slide level1" id="more-realistic-test-case-setup.">
 <h1>More realistic test case setup.</h1>
@@ -240,31 +237,134 @@ OK</code></pre>
 <span class="kw">class</span> TestCase:
     <span class="kw">def</span> setUp(<span class="ot">self</span>):
         <span class="kw">pass</span> <span class="co"># Do setup stuff here.</span>
-
     <span class="kw">def</span> tearDown(<span class="ot">self</span>):
         <span class="kw">pass</span> <span class="co"># Do teardown stuff here.</span>
-
     <span class="kw">def</span> test_always_passes(<span class="ot">self</span>):
         <span class="co">'''test_always_passes'''</span>
-        <span class="kw">assert</span> <span class="ot">True</span>,<span class="st">&quot;I should have passed&quot;</span>  <span class="co">#will always be True, so test will always pass.</span>
-
+        <span class="kw">assert</span> <span class="ot">True</span>,<span class="st">&quot;I should have passed&quot;</span>  <span class="co">#always True, so test will always pass.</span>
     <span class="kw">def</span> test_always_fails(<span class="ot">self</span>):
-        <span class="co">'''test_always_passes'''</span>
-        <span class="kw">assert</span> <span class="ot">False</span>,<span class="st">&quot;I failed&quot;</span> </code></pre>
-<p>The <code>setUp()</code> and <code>tearDown()</code> methods will be called before and after each test function is called.</p>
-<p><em>Why is this arranged with a <code>TestCase</code> class, and what is this <code>self</code> stuff?</em></p>
-<ul>
-<li>Defining a class to hold the tests defined a scope for the setup and teardown methods.</li>
-<li>If you define a class, all functions in it must have <code>self</code> as the first function argument, which is what gives you assess to all the attributes of the class instance.</li>
-<li>It automatically turns the class into a subclass of the <code>nose</code> test class, which lets it be recognized and run as a test. *(I don't understand it, I just do it!)</li>
-</ul>
+        <span class="co">'''test_always_fails'''</span>
+        <span class="kw">assert</span> <span class="ot">False</span>,<span class="st">&quot;I failed&quot;</span></code></pre>
 <p><em>What is the <code>from nose.tools import *</code> for?</em></p>
 <ul>
 <li>It gives you access to all the assert helpers in <code>nose</code></li>
 </ul>
+<p><em>Why is this arranged with a <code>TestCase</code> class, and what is this <code>self</code> stuff?</em></p>
+<ul>
+<li>Defining a class to hold the tests defined a scope for the setup and teardown methods. The <code>setUp()</code> and <code>tearDown()</code> methods will be called before and after each test function is called.</li>
+<li>If you define a class, all functions in it must have <code>self</code> as the first function argument, which is what gives you access to all the attributes of the class instance. <em>More later</em></li>
+</ul>
 </div>
 <div class="section slide level1" id="class-oriented-programming-and-how-it-helps-testing.">
 <h1>Class Oriented programming and how it helps testing.</h1>
+<p><strong>Since all tests are independent, how do you interact with your code functions, and what do you test in your assertions?</strong></p>
+<p>If I have a monolithic program with no functions and all straightline code, I simply can't test it in a TDD fashion or use a testing framework at all. The minimum requirement for using <code>nose</code> to test your program is writing it as a module so it can be imported and having functions that have inputs and return values.</p>
+<pre><code>#count_proj/count/count.py               #count_proj/tests/test_counts.py
+def count_to(n):                         from nose.tools import *
+  '''Counts up to &quot;n&quot;'''                 import count.count as c
+  results = []                           class TestCase:
+  for x in range(1,n+1):                   def test_one_elephant(self):
+      results.append(&quot;%i Elephant&quot; % x)      '''Get one elephant back when I count to 1.'''
+  return results                             assert '1 Elephant' in c.count_to(1)
+
+def main():                                def test_len_two_elephant(self):
+  for x in count_to(5):                      '''Get an array of two back when I count to 2.'''
+    print x                                  assert_equal(2,len(c.count_to(2)))
+
+if __name__ == &quot;__main__&quot;:
+  main()</code></pre>
+<p>Functions make TDD possible, but <em>classes</em> make your code manageable.</p>
+<p>In the simple example above, functions are sufficient. When dealing with more complex data structures and processing, breaking things into classes lets you concentrate on one piece of functionality at a time.</p>
+</div>
+<div class="section slide level1" id="anatomy-of-a-class.">
+<h1>Anatomy of a class.</h1>
+<p>Classes are templates for creating class instances.</p>
+<pre><code>pookie = BadCat()  # BadCat is the class, pookie is the instance.</code></pre>
+<p>Classes have a <code>self</code> attribute which refers to the instance itself when referred to in the class code. Any function in the class has access to all the variables in the class via self. Once an instance is created, instance variables or attributes can be accessed directly.</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> BadCat:
+    <span class="co">## Inside the class, everyone gets a 'self'</span>
+    <span class="kw">def</span> give_name(<span class="ot">self</span>,name):
+        <span class="ot">self</span>.name = name <span class="co"># Defines an instance attribute called 'name' and populates it.</span>
+    <span class="kw">def</span> call_cat(<span class="ot">self</span>):
+        <span class="kw">print</span> <span class="st">&quot;Hey </span><span class="ot">%s</span><span class="st">&quot;</span> % <span class="ot">self</span>.name <span class="co"># Has access to self.name since it has access to self.</span>
+
+pookie = BadCat()
+<span class="co">## No 'self' in instance method calls.</span>
+pookie.give_name(<span class="st">'pookie'</span>)
+pookie.call_cat()
+<span class="kw">print</span> pookie.name
+<span class="co"># Must call give_name() before calling call_cat() to create pookie.name</span></code></pre>
+<p>The existence of <code>self</code> means that all functions that operate on existing attributes of the instance only have to have a function signature of <code>do_something(self)</code> no matter what instance variables they refer to internally. <em>This saves you from passing function parameters around.</em></p>
+</div>
+<div class="section slide level1" id="anatomy-of-a-class-2.">
+<h1>Anatomy of a class 2.</h1>
+<ul>
+<li><p>Classes have an <code>__init__(self)</code> <em>whether explicit or implied</em>. <code>__init__(self)</code> is called when an instance of a class is created.</p></li>
+<li><p>Additional parameters can be passed in, but the instance creation needs to supply them.</p></li>
+</ul>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> Foo:
+    <span class="kw">def</span> <span class="ot">__init__</span>(<span class="ot">self</span>,bar):
+        <span class="ot">self</span>.bar = bar
+
+foo = Foo(<span class="st">'bar'</span>)</code></pre>
+<ul>
+<li><code>__init__(self)</code> is used to populate instance attributes that will always be needed, or for default values.</li>
+</ul>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> BadCat:
+    <span class="kw">def</span> <span class="ot">__init__</span>(<span class="ot">self</span>):
+        <span class="ot">self</span>.legs = <span class="dv">4</span>        <span class="co"># I hope!</span>
+        <span class="ot">self</span>.name = <span class="st">'Jerk!'</span>  <span class="co"># Default name if none supplied by give_name()</span>
+    <span class="kw">def</span> give_name(<span class="ot">self</span>,name):
+        <span class="ot">self</span>.name = name     <span class="co"># Defines instance attribute 'name' and populates it.</span>
+    <span class="kw">def</span> call_cat(<span class="ot">self</span>):
+        <span class="kw">print</span> <span class="st">&quot;Hey </span><span class="ot">%s</span><span class="st">&quot;</span> % <span class="ot">self</span>.name <span class="co"># Has access to self.name since it has access to self.</span>
+pookie = BadCat()
+<span class="kw">print</span> pookie.name <span class="co"># -&gt; 'Hey Jerk!'</span></code></pre>
+</div>
+<div class="section slide level1" id="tie-it-all-together-classes-and-tdd.">
+<h1>Tie it all together: Classes and TDD.</h1>
+<p>Because instances of classes contain collections of instance attributes and methods that work only on those attributes, they make control of your tests easier.</p>
+<p>Inside your test functions, you create a instance of the class under test, call some preliminary methods if needed, then check to see if the results of the call to the instance method under test come out OK.</p>
+<p>Big programs using simple data structures end up with code that concentrates on the plumbing and mechanics of manipulating the data while hiding the intent of the program.</p>
+<ul>
+<li><p>Well differentiated classes let you think about one piece of the problem at a time.</p></li>
+<li><p>Descriptively named functions in those classes expose the intent of what you want to accomplish without drowning in the detail of how the functions accomplish the task.</p></li>
+<li><p>Tests that exercise the class functions are guides to how the classes should be used.</p></li>
+<li><p>Thinking about <em>what</em> classes and functions should do as opposed to <em>how</em> they should do it makes it easier to write tests first without code to back them up.</p></li>
+</ul>
+</div>
+<div class="section slide level1" id="tie-it-all-together-classes-and-tdd-2.">
+<h1>Tie it all together: Classes and TDD 2.</h1>
+<p>I can (and should) write tests first, and writing the calls to code under test in an abstract way forces me to a class oriented coding style using expressive function names.</p>
+<pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> TestCase:
+    <span class="kw">def</span> test_client_create(<span class="ot">self</span>):
+        db = DashBoard()
+        db.addClient(<span class="st">'PGI'</span>)
+        <span class="co"># Maybe not so good, assumes db.client_list exists and is a sequence.</span>
+        <span class="kw">assert</span> <span class="st">'PGI'</span> in db.client_list
+        <span class="co"># client_exists() masks actual structure of DashBoard class.</span>
+        <span class="kw">assert</span> db.client_exists(<span class="st">'PGI'</span>)
+    <span class="kw">def</span> test_get_client_title(<span class="ot">self</span>):
+        db = DashBoard()
+        db.addClient(<span class="st">'PGI'</span>)
+        <span class="co"># Still requires knowledge of DashBoard internals.</span>
+        <span class="co"># db.client_list better be a dictionary of dictionaries</span>
+        <span class="kw">assert</span> db.client_list[<span class="st">'PGI'</span>][<span class="st">'heading'</span>] == <span class="st">'PGI Dashboard'</span>
+        <span class="co"># OR maybe instead</span>
+        pgi = db.getClient(<span class="st">'PGI'</span>)
+        <span class="kw">assert</span> pgi.heading == <span class="st">'PGI DashBoard'</span></code></pre>
+<p>I don't have to have any code written to run this test. It will fail, but I'm already thinking about how I want my program to act, and can now start to write code that will make this test pass. The attributes and functions you use in your tests should be what users of your classes should expect to know about, even if the user is only you.</p>
+<p><strong>Write the minimal amount of code that makes a test pass, <em>then</em> write more tests, and add the code to make them pass.</strong> Don't write too many tests too soon. If the test code that exercises your classes and functions looks kludgey, then maybe it means your program code needs to change.</p>
+<p>There will often be more test code than program code, but tests are not wasted effort. Instead they are the guardians that let you make <em>new</em> changes without wondering if anything old has been broken.</p>
+</div>
+<div class="section slide level1" id="closing-ideas.">
+<h1>Closing ideas.</h1>
+<ul>
+<li><p>Writing tests for existing programs is a wretched business, sometimes impossible. Write tests first!</p></li>
+<li><p>This only covers unit testing, which exercises your class functions in isolation. There are other kinds of testing that operate at higher levels like functional testing and acceptance testing, but python does not have great frameworks for these and they are mostly aimed at web apps or interactive applications running on a desktop.</p></li>
+<li><p>If your program interacts with the file system or has time of day dependencies, you can still do repeatable tests by using your setup and teardown methods to create mockups of the file system as you expect it to be. Clock time dependencies can be mocked as well IF you use module-level variables to hold times and dates and then refer to them in your code as opposed to referring to datetime.datetime.now() in your code directly. I have examples of how to do this.</p></li>
+<li><p>There are python libraries for mocking database interactions or objects that are expensive to create. If a test requires an instance of a big, hairy object, but only uses one or two attributes out of it, then mocking the object might be the way to go. <em>Note that you do not mock the object you are testing, but rather any predecessors it might have.</em></p></li>
+</ul>
 </div>
 </body>
 </html>
