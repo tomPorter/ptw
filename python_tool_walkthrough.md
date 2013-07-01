@@ -19,9 +19,9 @@ To install the `nose` testing framework (which we will use later):
 
 -   Issue this command:
 
-        /home/{your_userid}/> pip install --user -I nosetests 
+        /home/{your_userid}/> pip install --user -I nose 
 
-    This tells `pip` to install the `nosetests` package in your home directory
+    This tells `pip` to install the `nose` package in your home directory
     and to ignore any exiting system versions.
 
     *For now, this is how I would install any third party python package you are interested in,
@@ -30,14 +30,14 @@ To install the `nose` testing framework (which we will use later):
 -   `pip` installs stuff to `.local/` in your home directory, so you have to add `.local/bin` to your 
 path in your `.cshrc`
 
-        setenv PATH ${HOME}./local/bin:${PATH}
+        setenv PATH ${HOME}/.local/bin:${PATH}
 
-**`nosetests` is a unit test discovery framework that makes managing and running unit tests
+**`nose` is a unit test discovery framework that makes managing and running unit tests
 easier than using the python `UnitTest` module by itself.**
 
 #Hunh?
 
->"`nosetests` is a unit test discovery framework that makes managing and running unit tests
+>"`nose` is a unit test discovery framework that makes managing and running unit tests
 easier than using the python `UnitTest` module by itself."
 
 ##Which leads us to our next set of topics:

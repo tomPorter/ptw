@@ -53,18 +53,18 @@ Tom Porter
 <ul>
 <li><p>Sign onto the eclipse development server using <code>CRT</code> or <code>Putty</code></p></li>
 <li><p>Issue this command:</p>
-<pre><code>/home/{your_userid}/&gt; pip install --user -I nosetests </code></pre>
-<p>This tells <code>pip</code> to install the <code>nosetests</code> package in your home directory and to ignore any exiting system versions.</p>
+<pre><code>/home/{your_userid}/&gt; pip install --user -I nose </code></pre>
+<p>This tells <code>pip</code> to install the <code>nose</code> package in your home directory and to ignore any exiting system versions.</p>
 <p><em>For now, this is how I would install any third party python package you are interested in, particularly ones that you will use across projects.</em></p></li>
 <li><p><code>pip</code> installs stuff to <code>.local/</code> in your home directory, so you have to add <code>.local/bin</code> to your path in your <code>.cshrc</code></p>
-<pre><code>setenv PATH ${HOME}./local/bin:${PATH}</code></pre></li>
+<pre><code>setenv PATH ${HOME}/.local/bin:${PATH}</code></pre></li>
 </ul>
-<p><strong><code>nosetests</code> is a unit test discovery framework that makes managing and running unit tests easier than using the python <code>UnitTest</code> module by itself.</strong></p>
+<p><strong><code>nose</code> is a unit test discovery framework that makes managing and running unit tests easier than using the python <code>UnitTest</code> module by itself.</strong></p>
 </div>
 <div class="section slide level1" id="hunh">
 <h1>Hunh?</h1>
 <blockquote>
-<p>&quot;<code>nosetests</code> is a unit test discovery framework that makes managing and running unit tests easier than using the python <code>UnitTest</code> module by itself.&quot;</p>
+<p>&quot;<code>nose</code> is a unit test discovery framework that makes managing and running unit tests easier than using the python <code>UnitTest</code> module by itself.&quot;</p>
 </blockquote>
 <h2 id="which-leads-us-to-our-next-set-of-topics">Which leads us to our next set of topics:</h2>
 <ul>
