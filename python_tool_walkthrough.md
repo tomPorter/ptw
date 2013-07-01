@@ -463,3 +463,12 @@ examples of how to do this.
 If a test requires an instance of a big, hairy object, but only uses one or two attributes out of it, then
 mocking the object might be the way to go.  *Note that you do not mock the object you are testing, but rather
 any predecessors it might have.*
+
+---
+
+<p style="text-align:center;font-size:400%">Questions?</p>
+
+---
+
+<p style="text-align:center;font-size:400%">Thank You!</p>
+
