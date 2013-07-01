@@ -27,8 +27,13 @@ To install the `nose` testing framework (which we will use later):
     *For now, this is how I would install any third party python package you are interested in,
     particularly ones that you will use across projects.*
 
-`nosetests` is a unit test discovery framework that makes managing and running unit tests
-easier than using the python `UnitTest` module by itself.
+-   `pip` installs stuff to `.local/` in your home directory, so you have to add `.local/bin` to your 
+path in your `.cshrc`
+
+        setenv PATH ${HOME}./local/bin:${PATH}
+
+**`nosetests` is a unit test discovery framework that makes managing and running unit tests
+easier than using the python `UnitTest` module by itself.**
 
 #Hunh?
 
