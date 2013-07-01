@@ -338,13 +338,15 @@ pookie.call_cat() <span class="co"># -&gt; 'Hey Jerk!'</span></code></pre>
 <p>I can (and should) write tests first, and writing the calls to code under test in an abstract way forces me to a class oriented coding style using expressive function names.</p>
 <pre class="sourceCode python"><code class="sourceCode python"><span class="kw">class</span> TestCase:
     <span class="kw">def</span> test_client_create(<span class="ot">self</span>):
+        <span class="co">'''Creating a client.'''</span>
         db = DashBoard()
         db.addClient(<span class="st">'PGI'</span>)
         <span class="co"># Maybe not so good, assumes db.client_list exists and is a sequence.</span>
         <span class="kw">assert</span> <span class="st">'PGI'</span> in db.client_list
         <span class="co"># client_exists() masks actual structure of DashBoard class.</span>
         <span class="kw">assert</span> db.client_exists(<span class="st">'PGI'</span>)
-    <span class="kw">def</span> test_get_client_title(<span class="ot">self</span>):
+    <span class="kw">def</span> test_get_client_heading(<span class="ot">self</span>):
+        <span class="co">'''Retrieve Client heading.'''</span>
         db = DashBoard()
         db.addClient(<span class="st">'PGI'</span>)
         <span class="co"># Still requires knowledge of DashBoard internals.</span>

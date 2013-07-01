@@ -408,13 +408,15 @@ way forces me to a class oriented coding style using expressive function names.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ {.python}
 class TestCase:
     def test_client_create(self):
+        '''Creating a client.'''
         db = DashBoard()
         db.addClient('PGI')
         # Maybe not so good, assumes db.client_list exists and is a sequence.
         assert 'PGI' in db.client_list
         # client_exists() masks actual structure of DashBoard class.
         assert db.client_exists('PGI')
-    def test_get_client_title(self):
+    def test_get_client_heading(self):
+        '''Retrieve Client heading.'''
         db = DashBoard()
         db.addClient('PGI')
         # Still requires knowledge of DashBoard internals.
