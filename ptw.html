@@ -251,7 +251,7 @@ OK</code></pre>
 </ul>
 <p><em>Why is this arranged with a <code>TestCase</code> class, and what is this <code>self</code> stuff?</em></p>
 <ul>
-<li>Defining a class to hold the tests defined a scope for the setup and teardown methods. The <code>setUp()</code> and <code>tearDown()</code> methods will be called before and after each test function is called.</li>
+<li>Defining a class to hold the tests establishes a scope for the setup and teardown methods. The <code>setUp()</code> and <code>tearDown()</code> methods will be called before and after each test function is called.</li>
 <li>If you define a class, all functions in it must have <code>self</code> as the first function argument, which is what gives you access to all the attributes of the class instance. <em>More later</em></li>
 </ul>
 </div>
@@ -319,7 +319,7 @@ foo = Foo(<span class="st">'bar'</span>)</code></pre>
     <span class="kw">def</span> call_cat(<span class="ot">self</span>):
         <span class="kw">print</span> <span class="st">&quot;Hey </span><span class="ot">%s</span><span class="st">&quot;</span> % <span class="ot">self</span>.name <span class="co"># Has access to self.name since it has access to self.</span>
 pookie = BadCat()
-<span class="kw">print</span> pookie.name <span class="co"># -&gt; 'Hey Jerk!'</span></code></pre>
+pookie.call_cat() <span class="co"># -&gt; 'Hey Jerk!'</span></code></pre>
 </div>
 <div class="section slide level1" id="tie-it-all-together-classes-and-tdd.">
 <h1>Tie it all together: Classes and TDD.</h1>

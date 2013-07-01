@@ -283,7 +283,7 @@ class TestCase:
 
 *Why is this arranged with a `TestCase` class, and what is this `self` stuff?*
 
--   Defining a class to hold the tests defined a scope for the setup and teardown methods.
+-   Defining a class to hold the tests establishes a scope for the setup and teardown methods.
 The `setUp()` and `tearDown()` methods will be called before and after each test function is called.
 -   If you define a class, all functions in it must have `self` as the first function argument,
 which is what gives you access to all the attributes of the class instance. *More later*
@@ -376,7 +376,7 @@ class BadCat:
     def call_cat(self):
         print "Hey %s" % self.name # Has access to self.name since it has access to self.
 pookie = BadCat()
-print pookie.name # -> 'Hey Jerk!'
+pookie.call_cat() # -> 'Hey Jerk!'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #Tie it all together: Classes and TDD.
